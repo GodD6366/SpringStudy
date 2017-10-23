@@ -15,9 +15,9 @@ public class MySpringServer {
 
     private String name;
 
-    private Date createTime;
+    private String createTime;
 
     public void sayHello() {
-        System.out.println(createTime + ": hello mySpringServer from " + name);
+        System.out.println(createTime + ": hello mySpringServer , by " + name);
     }
 }

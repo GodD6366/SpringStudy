@@ -1,4 +1,6 @@
-package com.godd.core;
+package com.godd.core.factory;
+
+import com.godd.core.BeanDefinition;
 
 /**
  * Description:

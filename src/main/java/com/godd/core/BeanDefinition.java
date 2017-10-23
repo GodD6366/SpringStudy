@@ -12,11 +12,13 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class BeanDefinition {
+    private Object bean;
+
     private String beanClassName;
 
     private Class beanClass;
 
-    private PropertyValues filedValues;
+    private PropertyValues filedValues = new PropertyValues();
 
     public void setBeanClassName(String beanClassName) {
         this.beanClassName = beanClassName;
