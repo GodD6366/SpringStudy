@@ -1,26 +1,22 @@
 package com.godd.core;
 
+import lombok.Data;
+import lombok.experimental.Accessors;
+
 /**
  * Description:
  * User: godd
  * Date: 2017-10-23
  * Time: 下午9:20
  */
+@Data
+@Accessors(chain = true)
 public class BeanDefinition {
     private String beanClassName;
 
     private Class beanClass;
 
-    public BeanDefinition() {
-    }
-
-    public BeanDefinition(String beanClassName) {
-        this.setBeanClassName(beanClassName);;
-    }
-
-    public String getBeanClassName() {
-        return beanClassName;
-    }
+    private PropertyValues filedValues;
 
     public void setBeanClassName(String beanClassName) {
         this.beanClassName = beanClassName;
@@ -29,13 +25,5 @@ public class BeanDefinition {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public Class getBeanClass() {
-        return beanClass;
-    }
-
-    public void setBeanClass(Class beanClass) {
-        this.beanClass = beanClass;
     }
 }
