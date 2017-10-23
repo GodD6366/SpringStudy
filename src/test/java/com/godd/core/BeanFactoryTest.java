@@ -2,8 +2,6 @@ package com.godd.core;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Description:
  * User: godd
@@ -14,11 +12,18 @@ public class BeanFactoryTest {
 
     @Test
     public void testBeanFactory() {
-        BeanFactory beanFactory = BeanFactory.getInstance();
-        beanFactory.putBean("MySpringServer", new MySpringServer());
+        //1.初始化容器
+        BeanFactory beanFactory = new AutowiseCapableBeanFactory();
 
-        MySpringServer mySpringServer = (MySpringServer) beanFactory.getBean("MySpringServer");
-        mySpringServer.sayHello();
+        //2.存放对象信息
+
+        BeanDefinition beanDefinition = new BeanDefinition("com.godd.core.MySpringServer");
+        beanFactory.registerBean("SpringServer",beanDefinition);
+
+
+        //3.创建bean,并且调用
+        MySpringServer springServer = (MySpringServer) beanFactory.getBean("SpringServer");
+        springServer.sayHello();
 
     }
 
