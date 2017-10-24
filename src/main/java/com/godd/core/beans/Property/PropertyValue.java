@@ -1,4 +1,4 @@
-package com.godd.core.Property;
+package com.godd.core.beans.Property;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.godd.core.io;
+package com.godd.core.beans.io;
 
 import java.io.IOException;
 import java.io.InputStream;

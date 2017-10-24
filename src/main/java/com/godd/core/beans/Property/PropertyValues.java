@@ -1,6 +1,4 @@
-package com.godd.core.Property;
-
-import com.godd.core.Property.PropertyValue;
+package com.godd.core.beans.Property;
 
 import java.util.HashSet;
 import java.util.Iterator;

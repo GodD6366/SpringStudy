@@ -1,4 +1,4 @@
-package com.godd.core;
+package com.godd.core.beans;
 
 /**
  * Description:

@@ -1,6 +1,6 @@
-package com.godd.core;
+package com.godd.core.beans;
 
-import com.godd.core.Property.PropertyValues;
+import com.godd.core.beans.Property.PropertyValues;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

@@ -1,8 +1,8 @@
-package com.godd.core.factory;
+package com.godd.core.beans.factory;
 
-import com.godd.core.BeanDefinition;
-import com.godd.core.Property.PropertyValue;
-import com.godd.core.util.BeanUtil;
+import com.godd.core.beans.BeanDefinition;
+import com.godd.core.beans.BeanReference;
+import com.godd.core.beans.Property.PropertyValue;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -28,14 +28,18 @@ public class AutowiseCapableBeanFactory extends AbstractBeanFactory {
         //变量属性值,注入到对象中
         while (iterator.hasNext()) {
             PropertyValue next = iterator.next();
+            Object value = next.getValue();
+            if (value instanceof BeanReference) {
+                String refName = ((BeanReference) value).getName();
+                value = getBean(refName);
+            }
+
             Method method = beanClass.getDeclaredMethod(
                     parSetterName(next.getName()),
-                    next.getValue().getClass()
+                    value.getClass()
             );
-
-            method.invoke(bean, next.getValue());
+            method.invoke(bean, value);
         }
-
         return bean;
     }
 

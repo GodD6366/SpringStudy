@@ -1,9 +1,10 @@
-package com.godd.core.xml;
+package com.godd.core.beans.xml;
 
-import com.godd.core.AbstractBeanDefiition;
-import com.godd.core.BeanDefinition;
-import com.godd.core.Property.PropertyValue;
-import com.godd.core.io.ResourceLoader;
+import com.godd.core.beans.AbstractBeanDefiition;
+import com.godd.core.beans.BeanDefinition;
+import com.godd.core.beans.BeanReference;
+import com.godd.core.beans.Property.PropertyValue;
+import com.godd.core.beans.io.ResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -46,12 +47,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
         inputStream.close();
     }
 
-    public void registerBeanDefinitions(Document doc) {
+    public void registerBeanDefinitions(Document doc) throws Exception{
         Element root = doc.getDocumentElement();
         parseBeanDefinitions(root);
     }
 
-    protected void parseBeanDefinitions(Element root) {
+    protected void parseBeanDefinitions(Element root) throws Exception{
         NodeList nl = root.getChildNodes();
         for (int i = 0; i < nl.getLength(); i++) {
             Node node = nl.item(i);
@@ -62,7 +63,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
         }
     }
 
-    protected void processBeanDefinition(Element ele) {
+    protected void processBeanDefinition(Element ele) throws Exception{
         String name = ele.getAttribute("name");
         String className = ele.getAttribute("class");
         String schema = ele.getAttribute("schema");
@@ -79,7 +80,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
      * @author 戴长春    dcc@vtc365.com
      * @date 2017/10/24 下午1:38
      */
-    private void processProperty(Element ele, BeanDefinition beanDefinition) {
+    private void processProperty(Element ele, BeanDefinition beanDefinition) throws Exception {
         NodeList propertyNode = ele.getElementsByTagName("property");
         for (int i = 0; i < propertyNode.getLength(); i++) {
             Node node = propertyNode.item(i);
@@ -87,7 +88,21 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
                 Element propertyEle = (Element) node;
                 String name = propertyEle.getAttribute("name");
                 String value = propertyEle.getAttribute("value");
-                beanDefinition.getFiledValues().addPropertyValue(new PropertyValue(name, value));
+                String ref = propertyEle.getAttribute("ref");
+
+                if (!value.equals("")) {
+                    beanDefinition.getFiledValues().addPropertyValue(new PropertyValue(name, value));
+                    continue;
+                }
+                if (!ref.equals("")) {
+                    BeanReference beanReference = new BeanReference(ref);
+                    beanDefinition.getFiledValues().addPropertyValue(new PropertyValue(name, beanReference));
+                    continue;
+                }
+
+                throw new IllegalAccessException("Configuration problem: <property> element for property '" + name + "' must specify a ref or value");
+
+
             }
         }
     }

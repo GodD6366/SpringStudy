@@ -1,6 +1,6 @@
-package com.godd.core.factory;
+package com.godd.core.beans.factory;
 
-import com.godd.core.BeanDefinition;
+import com.godd.core.beans.BeanDefinition;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,21 +21,34 @@ public abstract class AbstractBeanFactory implements BeanFactory {
      * @date 2017/10/24 下午1:39
      */
     public void registerBean(String beanName, BeanDefinition beanDefinition) {
-        try {
-            beanDefinition.setBean(doCreateBean(beanDefinition));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         beans.put(beanName, beanDefinition);
     }
 
-    public Object getBean(String beanName) {
+    /**
+     * 获取容器中bean,没有初始化则执行初始化
+     *
+     * @author 戴长春    dcc@vtc365.com
+     * @date 2017/10/24 下午9:55
+     */
+    public Object getBean(String beanName) throws Exception {
         BeanDefinition beanDefinition = beans.get(beanName);
-        if (beanDefinition.getSchema().equals("single")) {
+        if (beanDefinition == null) {
+            throw new IllegalAccessException("no bean named '" + beanName + "' is defined");
+        }
+
+        /**
+         * 如果bean已经创建,并且是单例模式,则直接返回
+         * @author 戴长春    dcc@vtc365.com
+         * @date 2017/10/24 下午9:56
+         */
+        if (beanDefinition.getBean() != null && beanDefinition.getSchema().equals("single")) {
             return beanDefinition.getBean();
         } else {
             try {
-                return doCreateBean(beanDefinition);
+                System.out.println("create bean for name: " + beanName);
+                Object bean = doCreateBean(beanDefinition);
+                beanDefinition.setBean(bean);
+                return bean;
             } catch (Exception e) {
                 e.printStackTrace();
             }

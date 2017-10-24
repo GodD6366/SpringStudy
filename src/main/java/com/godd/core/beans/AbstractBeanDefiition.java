@@ -1,6 +1,6 @@
-package com.godd.core;
+package com.godd.core.beans;
 
-import com.godd.core.io.ResourceLoader;
+import com.godd.core.beans.io.ResourceLoader;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
