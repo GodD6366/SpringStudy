@@ -3,6 +3,7 @@ package com.godd.core.beans.factory;
 import com.godd.core.beans.BeanDefinition;
 import com.godd.core.beans.BeanReference;
 import com.godd.core.beans.Property.PropertyValue;
+import com.godd.core.beans.util.BeanUtil;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
@@ -35,21 +36,11 @@ public class AutowiseCapableBeanFactory extends AbstractBeanFactory {
             }
 
             Method method = beanClass.getDeclaredMethod(
-                    parSetterName(next.getName()),
+                    BeanUtil.parseSetter(next.getName()),
                     value.getClass()
             );
             method.invoke(bean, value);
         }
         return bean;
-    }
-
-    /**
-     * AutowiseCapableBeanFactory
-     *
-     * @author 戴长春    dcc@vtc365.com
-     * @date 2017/10/24 下午1:39
-     */
-    public String parSetterName(String name) {
-        return "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 }
