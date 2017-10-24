@@ -1,5 +1,6 @@
 package com.godd.core;
 
+import com.godd.core.Property.PropertyValues;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -12,7 +13,9 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class BeanDefinition {
-    private Object bean;
+    private Object bean; //单例时存放的bean对象
+
+    private String schema; //single
 
     private String beanClassName;
 

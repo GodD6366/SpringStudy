@@ -14,17 +14,33 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class AbstractBeanFactory implements BeanFactory {
     private Map<String, BeanDefinition> beans = new ConcurrentHashMap<String, BeanDefinition>();
 
+    /**
+     * 注册备案到容器中
+     *
+     * @author 戴长春    dcc@vtc365.com
+     * @date 2017/10/24 下午1:39
+     */
     public void registerBean(String beanName, BeanDefinition beanDefinition) {
         try {
             beanDefinition.setBean(doCreateBean(beanDefinition));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        beans.put(beanName,beanDefinition);
+        beans.put(beanName, beanDefinition);
     }
 
     public Object getBean(String beanName) {
-        return beans.get(beanName).getBean();
+        BeanDefinition beanDefinition = beans.get(beanName);
+        if (beanDefinition.getSchema().equals("single")) {
+            return beanDefinition.getBean();
+        } else {
+            try {
+                return doCreateBean(beanDefinition);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 
 

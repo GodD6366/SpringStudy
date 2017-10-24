@@ -2,7 +2,7 @@ package com.godd.core.xml;
 
 import com.godd.core.AbstractBeanDefiition;
 import com.godd.core.BeanDefinition;
-import com.godd.core.PropertyValue;
+import com.godd.core.Property.PropertyValue;
 import com.godd.core.io.ResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,6 +31,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
         doLoadBeanDefinitions(inputStream);
     }
 
+    /**
+     * 创建XML对象
+     *
+     * @author 戴长春    dcc@vtc365.com
+     * @date 2017/10/24 下午1:38
+     */
     protected void doLoadBeanDefinitions(InputStream inputStream) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = factory.newDocumentBuilder();
@@ -42,7 +48,6 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
 
     public void registerBeanDefinitions(Document doc) {
         Element root = doc.getDocumentElement();
-
         parseBeanDefinitions(root);
     }
 
@@ -60,12 +65,20 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefiition {
     protected void processBeanDefinition(Element ele) {
         String name = ele.getAttribute("name");
         String className = ele.getAttribute("class");
+        String schema = ele.getAttribute("schema");
         BeanDefinition beanDefinition = new BeanDefinition();
         processProperty(ele, beanDefinition);
         beanDefinition.setBeanClassName(className);
+        beanDefinition.setSchema(schema);
         getRegistry().put(name, beanDefinition);
     }
 
+    /**
+     * 解析XML定义的值,存入到容器中
+     *
+     * @author 戴长春    dcc@vtc365.com
+     * @date 2017/10/24 下午1:38
+     */
     private void processProperty(Element ele, BeanDefinition beanDefinition) {
         NodeList propertyNode = ele.getElementsByTagName("property");
         for (int i = 0; i < propertyNode.getLength(); i++) {

@@ -1,9 +1,9 @@
 package com.godd.core.factory;
 
 import com.godd.core.BeanDefinition;
-import com.godd.core.PropertyValue;
+import com.godd.core.Property.PropertyValue;
+import com.godd.core.util.BeanUtil;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class AutowiseCapableBeanFactory extends AbstractBeanFactory {
     @Override
-    protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception{
+    protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
         Object bean = null;
         Class beanClass = beanDefinition.getBeanClass();
         bean = beanClass.newInstance();
@@ -25,9 +25,10 @@ public class AutowiseCapableBeanFactory extends AbstractBeanFactory {
                 .getPropertyValues()
                 .iterator();
 
+        //变量属性值,注入到对象中
         while (iterator.hasNext()) {
             PropertyValue next = iterator.next();
-            Method method  = beanClass.getDeclaredMethod(
+            Method method = beanClass.getDeclaredMethod(
                     parSetterName(next.getName()),
                     next.getValue().getClass()
             );
@@ -38,6 +39,12 @@ public class AutowiseCapableBeanFactory extends AbstractBeanFactory {
         return bean;
     }
 
+    /**
+     * AutowiseCapableBeanFactory
+     *
+     * @author 戴长春    dcc@vtc365.com
+     * @date 2017/10/24 下午1:39
+     */
     public String parSetterName(String name) {
         return "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
     }

@@ -19,23 +19,22 @@ public class BeanFactoryTest {
     @Test
     public void testBeanFactory() throws Exception {
 
+        //1.加载xml配置文件
         XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
         xmlBeanDefinitionReader.loadBeanDefinitions("mySpring.xml");
 
-        //1.初始化容器
+        //2.初始化容器
         BeanFactory beanFactory = new AutowiseCapableBeanFactory();
 
-        //2.存放对象信息
-
-        //3.存储字段值
-        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : xmlBeanDefinitionReader.getRegistry().entrySet()) {
-            beanFactory.registerBean(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
-        }
+        //3.存储XML中定义的bean信息
+        xmlBeanDefinitionReader.getRegistry().forEach((key, value) -> {
+            System.out.println("[register]: " + key);
+            beanFactory.registerBean(key, value);
+        });
 
         //4.创建bean,并且调用
         MySpringServer springServer = (MySpringServer) beanFactory.getBean("SpringServer");
         springServer.sayHello();
-
     }
 
 }
