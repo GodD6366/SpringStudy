@@ -2,6 +2,7 @@ package com.godd.core;
 
 import com.godd.core.context.ApplicationContext;
 import com.godd.core.context.ClassPathXmlApplicationContext;
+import lombok.Value;
 import org.junit.Test;
 
 /**
@@ -14,7 +15,6 @@ public class BeanFactoryTest {
 
     @Test
     public void testBeanFactory() throws Exception {
-
         ApplicationContext context = new ClassPathXmlApplicationContext("mySpring.xml");
         OutputServer outputServer = (OutputServer) context.getBean("OutputServer");
         outputServer.sayHello();

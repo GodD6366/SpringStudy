@@ -45,7 +45,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             return beanDefinition.getBean();
         } else {
             try {
-                System.out.println("create bean for name: " + beanName);
+                System.err.println("create bean for name: " + beanName);
                 Object bean = doCreateBean(beanDefinition);
                 beanDefinition.setBean(bean);
                 return bean;
